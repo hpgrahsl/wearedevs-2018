@@ -10,6 +10,8 @@ This repository contains a working example of how to build a modern data-centric
 - stream processing: [Apacha Kafka Streams](https://kafka.apache.org/documentation/streams/)
 - RPC integration layer & reactive WebAPI: [Spring Boot 2.0](https://projects.spring.io/spring-boot/)
 
+The accompanying slide deck for my talk about **Stateful & Reactive Streaming Applications Without a Database** at [WeAreDevelopers 2018](https://www.wearedevelopers.com/) can be found on [SpeakerDeck](https://speakerdeck.com/hpgrahsl/stateful-and-reactive-streaming-applications-without-a-database)
+
 ![meme1](docs/images/meme1.png)
 
 ## Usage example:
@@ -17,7 +19,7 @@ This repository contains a working example of how to build a modern data-centric
 The following paragraphs give a detailed step-by-step explanation to setup and run the application on your local machine.
 
 #### 1 Launch your Kafka environment:
-The example application needs a fully working Kafka environment, ideally on your local machine. If you are into containers and know how to use Docker feel free to make use of pre-built Docker images for Apache Kafka of your choice (e.g. the ones provided by [Confluent](https://hub.docker.com/r/confluentinc/)). For simplicity reasons, it is probably a good idea to launch all Kafka realted processes based on a [convenient CLI](https://docs.confluent.io/current/cli/index.html) that ships with the Open Source version of [Confluent's Platform](https://www.confluent.io/download/) - currently version 4.0.0.
+The example application needs a fully working Kafka environment, ideally on your local machine. If you are into containers and know how to use Docker feel free to make use of pre-built Docker images for Apache Kafka of your choice (e.g. the ones provided by [Confluent](https://hub.docker.com/r/confluentinc/)). For simplicity reasons, it is probably a good idea to launch all Kafka realted processes based on a [convenient CLI](https://docs.confluent.io/current/cli/index.html) that ships with the Open Source version of [Confluent's Platform](https://www.confluent.io/download/) - currently version 4.1.0.
 
 Change to your installation folder (e.g. /usr/local/confluent-4.1.0/) and run 
 
@@ -38,6 +40,8 @@ Starting kafka-rest
 kafka-rest is [UP]
 Starting connect
 connect is [UP]
+Starting ksql-server
+ksql-server is [UP]
 ```
 
 _In case you are facing any issues while bringing up the Confluent Platform read through their amazing documentation which hopefully helps you getting fixed any issues :)_
@@ -111,7 +115,7 @@ This should result in JSON array containing all _connectors_ currently available
 	"value.converter.schemas.enable": false, 
     "key.converter": "org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schemas.enable": false,
-    "filter.keywords": "meltdown,spectre,intel,amd,arm,sparc,exploit,cpu,vulnerability,attack,security"
+    "filter.keywords": "money,bitcoin,cryptocurrency,blockchain,ethereum,shitcoin,bitcoinbubble"
     }
 }
 ```
@@ -146,7 +150,7 @@ mvn clean package
 then run the application from the command line using:
 
 ```bash
-java -jar -Dserver.port=8881 -Dkstreams.tweetsTopic=live-tweets target/kafka-streams-emojitracker-0.1-SNAPSHOT.jar
+java -jar -Dserver.port=8881 -Dkstreams.tweetsTopic=live-tweets target/kafka-streams-emojitracker-0.5-SNAPSHOT.jar
 ```
 
 #### 6 Interactively query the kstreams application state stores
@@ -306,7 +310,7 @@ In case you want to run multiple instances to experiment with scalability and fa
 e.g. start a 2nd instance like so:
 
 ```bash
-java -jar -Dserver.port=8882 -Dlive.demo.instance.id=2 -Dkstreams.tweetsTopic=live-tweets target/kafka-streams-emojitracker-0.1-SNAPSHOT.jar
+java -jar -Dserver.port=8882 -Dlive.demo.instance.id=2 -Dkstreams.tweetsTopic=live-tweets target/kafka-streams-emojitracker-0.5-SNAPSHOT.jar
 ```
 
 Now you can query any of the two instances to get the emoji count results!
